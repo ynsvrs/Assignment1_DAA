@@ -1,19 +1,12 @@
 package com.algosassignment1.tests;
 
-import com.algosassignment1.metrics.Metrics;
 import com.algosassignment1.sorts.DeterministicSelect;
+import com.algosassignment1.metrics.Metrics;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeterministicSelectTest {
-
-    @Test
-    void testSmallArray() {
-        int[] arr = {7, 2, 5, 3, 1};
-        Metrics metrics = new Metrics();
-        assertEquals(3, DeterministicSelect.select(arr, 2, metrics));
-    }
 
     @Test
     void testRandomArrays() {
@@ -27,23 +20,28 @@ public class DeterministicSelectTest {
             Arrays.sort(copy);
 
             Metrics metrics = new Metrics();
-            int result = DeterministicSelect.select(arr, k, metrics);
+            int sel = DeterministicSelect.select(arr, k, metrics);
 
-            assertEquals(copy[k], result);
+            assertEquals(copy[k], sel, "Failed on trial " + t);
         }
     }
 
     @Test
-    void testEmptyArrayThrows() {
-        int[] arr = {};
+    void testSmallArray() {
+        int[] arr = {5, 2, 9, 1, 3};
         Metrics metrics = new Metrics();
-        assertThrows(IllegalArgumentException.class, () -> DeterministicSelect.select(arr, 0, metrics));
+        int sel = DeterministicSelect.select(arr, 2, metrics);
+        assertEquals(3, sel);
     }
 
     @Test
-    void testSingleElement() {
+    void testEdgeCases() {
         int[] arr = {42};
         Metrics metrics = new Metrics();
         assertEquals(42, DeterministicSelect.select(arr, 0, metrics));
+
+        int[] empty = {};
+        Metrics metrics2 = new Metrics();
+        assertThrows(IllegalArgumentException.class, () -> DeterministicSelect.select(empty, 0, metrics2));
     }
 }

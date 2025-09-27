@@ -13,6 +13,7 @@ public class DeterministicSelect {
         if (arr == null || arr.length == 0 || k < 0 || k >= arr.length)
             throw new IllegalArgumentException("Invalid input");
 
+        metrics.reset();
         return selectRecursive(arr, 0, arr.length - 1, k, metrics);
     }
 
@@ -29,22 +30,10 @@ public class DeterministicSelect {
         int pivotIndex = SortUtils.partition(arr, lo, hi, pivot, metrics);
         metrics.exit();
 
-        int leftSize = pivotIndex - lo;
-        int rightSize = hi - pivotIndex;
-
-        // Recurse into the smaller side first
         if (k < pivotIndex) {
-            if (leftSize < rightSize) {
-                return selectRecursive(arr, lo, pivotIndex - 1, k, metrics);
-            } else {
-                return selectRecursive(arr, lo, pivotIndex - 1, k, metrics);
-            }
+            return selectRecursive(arr, lo, pivotIndex - 1, k, metrics);
         } else if (k > pivotIndex) {
-            if (rightSize < leftSize) {
-                return selectRecursive(arr, pivotIndex + 1, hi, k, metrics);
-            } else {
-                return selectRecursive(arr, pivotIndex + 1, hi, k, metrics);
-            }
+            return selectRecursive(arr, pivotIndex + 1, hi, k, metrics);
         } else {
             return arr[pivotIndex];
         }
@@ -83,3 +72,4 @@ public class DeterministicSelect {
         }
     }
 }
+
