@@ -8,27 +8,36 @@ import com.algosassignment1.sorts.DeterministicSelect;
 import com.algosassignment1.sorts.ClosestPair;
 import com.algosassignment1.sorts.ClosestPair.Point;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
 public class AlgoRunner {
+
     public static void main(String[] args) throws IOException {
-        if (args.length < 1) {
-            System.out.println("Usage: java -cp target/classes com.algosassignment1.cli.AlgoRunner <n>");
-            return;
-        }
-
-        int n = Integer.parseInt(args[0]);
-        Random rnd = new Random();
         Metrics metrics = new Metrics();
-
         String file = "metrics.csv";
+        File f = new File(file);
+        boolean writeHeader = !f.exists();
 
-        // header each run
-        try (FileWriter fw = new FileWriter(file, false)) {
-            fw.write("Algorithm,n,Comparisons,Allocations,MaxDepth,Time(ns)\n");
+        // Write header only if file doesn't exist
+        if (writeHeader) {
+            try (FileWriter fw = new FileWriter(f, true)) {
+                fw.write("Algorithm,n,Comparisons,Allocations,MaxDepth,Time(ns)\n");
+            }
         }
+
+        int[] sizes = {1000, 5000, 10000};  // array sizes to test
+        for (int n : sizes) {
+            runAlgorithms(n, metrics, file);
+        }
+
+        System.out.println("Metrics written to " + file);
+    }
+
+    private static void runAlgorithms(int n, Metrics metrics, String file) throws IOException {
+        Random rnd = new Random();
 
         // MergeSort
         int[] arr = rnd.ints(n, 0, 10000).toArray();
@@ -66,7 +75,7 @@ public class AlgoRunner {
                 String.valueOf(metrics.getMaxDepth()),
                 String.valueOf(t1 - t0));
 
-        // Closest pair
+        // Closest Pair
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
             points[i] = new Point(rnd.nextDouble() * 10000, rnd.nextDouble() * 10000);
@@ -80,7 +89,5 @@ public class AlgoRunner {
                 String.valueOf(metrics.getAllocations()),
                 String.valueOf(metrics.getMaxDepth()),
                 String.valueOf(t1 - t0));
-
-        System.out.println("Metrics written to " + file);
     }
 }
