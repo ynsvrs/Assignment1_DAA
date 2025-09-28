@@ -72,13 +72,14 @@ Results are exported to CSV for plotting (`metrics.csv`).
 
 ### Execution Time vs n (ns)
 
-| n     | DeterministicSelect | MergeSort   | QuickSort   |
-| ----- | ------------------ | ----------- | ----------- |
-| 1000  | 123400.9           | 184997.312  | 191316.61   |
-| 5000  | 663176.365         | 1033841.959 | 1212656.158 |
-| 10000 | 1381886.803        | 2316441.912 | 2673742.335 |
+| n     | DeterministicSelect | MergeSort     | QuickSort    |
+|-------|------------------|---------------|-------------|
+| 1000  | 123400.9         | 184997.312    | 191316.61   |
+| 5000  | 663176.365       | 1033841.959   | 1212656.158 |
+| 10000 | 1381886.803      | 2316441.912   | 2673742.335 |
 
 ![Execution Time vs n](docs/chart.png)
+
 
 **Observations:**
 - QuickSort slightly slower for larger n due to pivot randomization and recursion overhead.
